@@ -46,7 +46,7 @@ public class Notice {
 						find_Id(conn,sc);
 						break;
 					case "4" :
-						change_Pw(conn);
+						changePw(conn,sc);
 						break;
 					case "5" :
 						run = false;
@@ -70,9 +70,28 @@ public class Notice {
 		}
 	}
 
-	private static void change_Pw(Connection conn) {
-		// TODO Auto-generated method stub
-		
+	private static void changePw(Connection conn,Scanner sc) throws SQLException {
+		System.out.println("이름을 입력해주세요");
+		String name = sc.nextLine();
+		System.out.println("전화번호를 입력해주세요");
+		String tel = sc.nextLine();
+		String check_id = do_find_id(conn,name,tel);
+		System.out.println("아이디를 입력해주세요");
+		String id = sc.nextLine();
+		if(id.equals(check_id)) doChangePw(conn,sc,id);
+		else System.out.println("일치하는 데이터가 없습니다.");
+	}
+
+	private static void doChangePw(Connection conn, Scanner sc,String id) throws SQLException {
+		System.out.println("새로운 비밀번호를 입력해주세요");
+		String pw = sc.nextLine();
+		String sql = "{call change_pw(?,?)}";
+		CallableStatement changeSql = conn.prepareCall(sql);
+		changeSql.setString(1,id);
+		changeSql.setString(2,pw);
+		changeSql.execute();
+		changeSql.close();
+		System.out.println("새로운 비밀번호로 변경되었습니다.");
 	}
 
 	private static void find_Id(Connection conn,Scanner sc) throws SQLException {
@@ -80,10 +99,12 @@ public class Notice {
 		String name = sc.nextLine();
 		System.out.println("전화번호를 입력해주세요");
 		String tel = sc.nextLine();
-		do_find_id(conn,name,tel);
+		String id = do_find_id(conn,name,tel);
+		if(id == null) System.out.println("해당 데이터와 일치하는 아이디가 존재하지 않습니다");
+		else System.out.println(name + "님의 아이디는"+ id+"입니다");
 	}
 	
-	private static void do_find_id(Connection conn,String name, String tel) throws SQLException {	
+	private static String do_find_id(Connection conn,String name, String tel) throws SQLException {	
 		String sql = "{call find_id(?,?,?)}";
 		CallableStatement findSql = conn.prepareCall(sql);
 		findSql.setString(1,name);
@@ -91,8 +112,7 @@ public class Notice {
 		findSql.registerOutParameter(3, Types.VARCHAR);
 		findSql.execute();
 		String id = findSql.getString(3);		
-		if(id == null) System.out.println("해당 데이터와 일치하는 아이디가 존재하지 않습니다");
-		else System.out.println(name + "님의 아이디는"+ id+"입니다");
+		return id;
 	}
 	
 	private static Board get_Id(Connection conn,Scanner sc,String id) throws SQLException {
