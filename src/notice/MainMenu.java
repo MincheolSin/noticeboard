@@ -276,7 +276,6 @@ public class MainMenu {
 		String bdetail = boardFind.getString(2);
 		int bread = boardFind.getInt(3);
 		boardFind.close();
-		if(bdetail == null) return null;
 		board.setBdetail(bdetail);
 		board.setBread(bread);
 		return board;
