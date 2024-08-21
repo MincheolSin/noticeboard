@@ -64,7 +64,27 @@ public class Login {
 		return id;
 	}
 	
-	private MainMenu get_Id(Connection conn,Scanner sc,String id) throws SQLException {
+	MainMenu login(Connection conn,Scanner sc) throws SQLException{
+		System.out.println("아이디를 입력해주세요");
+		String id = sc.nextLine();
+		System.out.println("비밀번호를 입력해주세요");
+		String pw = sc.nextLine();
+		Info info = get_Id(conn,sc,id);
+		if(info == null) {
+			return null;
+		}
+		else if(info.getPw().equals(pw)) {
+			String sql = "{call check_login(?)}";
+			CallableStatement checkLogin = conn.prepareCall(sql);
+			checkLogin.setString(1,id);
+			checkLogin.execute();
+			checkLogin.close();
+			return new MainMenu(info);
+		}
+		return null;
+	}
+	
+	private Info get_Id(Connection conn,Scanner sc,String id) throws SQLException {
 		String sql = "{call do_login(?,?)}";
 		CallableStatement doLogin = conn.prepareCall(sql);
 		doLogin.setString(1,id);
@@ -75,27 +95,7 @@ public class Login {
 		Info info = set_Info(rs.getString("id"),rs.getString("pw"),rs.getString("name")
 				,rs.getString("tel"),rs.getString("adress"),rs.getInt("sexual"),rs.getInt("authority"));
 		rs.close();
-		return new MainMenu(info);
-	}
-	
-	MainMenu login(Connection conn,Scanner sc) throws SQLException{
-		System.out.println("아이디를 입력해주세요");
-		String id = sc.nextLine();
-		System.out.println("비밀번호를 입력해주세요");
-		String pw = sc.nextLine();
-		MainMenu mainMenu = get_Id(conn,sc,id);
-		if(mainMenu == null) {
-			return null;
-		}
-		else if(mainMenu.getPw().equals(pw)) {
-			String sql = "{call check_login(?)}";
-			CallableStatement checkLogin = conn.prepareCall(sql);
-			checkLogin.setString(1,id);
-			checkLogin.execute();
-			checkLogin.close();
-			return mainMenu;
-		}
-		return null;
+		return info;
 	}
 
 	void accession(Connection conn, Scanner sc) throws SQLException {
