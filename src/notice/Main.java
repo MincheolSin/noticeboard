@@ -19,23 +19,23 @@ public class Main {
 			);	
 			Scanner sc = new Scanner(System.in);
 			boolean run = true;
-			Login notice = new Login();
+			Login login = new Login();
 			while(run) {
-				notice.powerOn();
+				login.powerOn();
 				switch(sc.nextLine()) {
 					case "1" :					
-						notice.accession(conn,sc);
+						login.accession(conn,sc);
 						break;
 					case "2" :
-						MainMenu board =notice.login(conn,sc);
+						MainMenu board =login.login(conn,sc);
 						if(board !=null) run = board.mainMenu(conn,sc);
 						else System.out.println("아이디나 비밀번호가 잘못되었습니다.");
 						break;
 					case "3" :
-						notice.find_Id(conn,sc);
+						login.find_Id(conn,sc);
 						break;
 					case "4" :
-						notice.changePw(conn,sc);
+						login.changePw(conn,sc);
 						break;
 					case "5" :
 						run = false;
