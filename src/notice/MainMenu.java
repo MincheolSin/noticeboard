@@ -76,6 +76,7 @@ public class MainMenu {
 			}
 		}
 	}
+	
 	private boolean secessionInfo(Connection conn,Scanner sc) throws SQLException {		
 		if(!check_pw(sc)) {
 			System.out.println("비밀번호가 다릅니다");
@@ -573,8 +574,5 @@ public class MainMenu {
 		logoutUser.setString(1,info.getId());
 		logoutUser.execute();
 		logoutUser.close();
-	}
-	public String getPw() {
-		return info.getPw();
 	}
 }
