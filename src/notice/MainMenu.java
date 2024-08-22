@@ -120,13 +120,15 @@ public class MainMenu {
 	
 	private void doModifyInfo(Connection conn, Scanner sc) throws SQLException {
 		Info modifyInfo = getModifyInfo(sc);
+		
 		while(true) {
 			System.out.println(modifyInfo+" 바꿀 비밀번호 : "+modifyInfo.getPw());
 			System.out.println("1: 수정완료");
 			System.out.println("2: 다시입력");
 			System.out.println("3: 이전 화면으로");
 			switch(sc.nextLine()) {
-				case "1" :					
+				case "1" :
+					if(!Login.check_sexual(conn,modifyInfo)) return;
 					putModifyInfo(conn,modifyInfo);
 					return;
 				case "2" :

@@ -52,7 +52,8 @@ public class Info {
 	}
 	public String viewSexual() {
 		if(sexual== 1) return"남자";
-		else return "여자";
+		else if(sexual== 2)return "여자";
+		else return "잘못 입력된 성별";
 	}
 	public int getAuthority() {
 		return authority;

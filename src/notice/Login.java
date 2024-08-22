@@ -184,6 +184,16 @@ public class Login {
 		return true;
 		
 	}
+	
+	static boolean check_sexual(Connection conn, Info info) throws SQLException {
+		
+		if(info.getSexual()==-1) {
+			System.out.println("성별이 잘못되었습니다.");
+			return false;
+		}
+		return true;
+		
+	}
 	private boolean id_Checker(Connection conn,String id) throws SQLException {
 		String sql = "{? = call check_Id(?)}";
 		CallableStatement getId = conn.prepareCall(sql);
