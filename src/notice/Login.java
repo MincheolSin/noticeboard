@@ -120,8 +120,7 @@ public class Login {
 		}
 	}
 	private void put_info(Connection conn, Info info) throws SQLException {
-		boolean run = check_Info(conn,info);
-		if(run) {
+		if(check_Info(conn,info)&&check_sexual(conn,info)) {
 			String sql = "{call users_create(?,?,?,?,?,?)}";
 			CallableStatement userCreate = conn.prepareCall(sql);
 			userCreate.setString(1, info.getId());
@@ -175,10 +174,6 @@ public class Login {
 	private boolean check_Info(Connection conn, Info info) throws SQLException {
 		if(id_Checker(conn,info.getId())) {
 			System.out.println("중복되는 아이디 입니다.");
-			return false;
-		}
-		if(info.getSexual()==-1) {
-			System.out.println("성별이 잘못되었습니다.");
 			return false;
 		}
 		return true;

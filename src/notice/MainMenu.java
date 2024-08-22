@@ -143,6 +143,7 @@ public class MainMenu {
 		}
 		
 	}
+	
 	private Info getModifyInfo(Scanner sc) {	
 		Info modifyInfo = new Info();
 		modifyInfo.setId(info.getId());
